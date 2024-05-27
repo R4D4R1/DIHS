@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Mirror;
 
-public class CharacterMovement : MonoBehaviour
+public class CharacterMovement : NetworkBehaviour
 {
     [SerializeField] private CharacterController characterController;
     [SerializeField] private float movementSpeed;
@@ -41,8 +42,11 @@ public class CharacterMovement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        HandleGravity();
-        HandleMovement();
+        if(isLocalPlayer) 
+        {
+            HandleGravity();
+            HandleMovement();
+        }
     }
 
     private void HandleMovement()
