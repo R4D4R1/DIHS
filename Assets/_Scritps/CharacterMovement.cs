@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Mirror;
+using Unity.VisualScripting;
 
 public class CharacterMovement : NetworkBehaviour
 {
@@ -39,7 +40,6 @@ public class CharacterMovement : NetworkBehaviour
         _userInput = Vector2.zero;
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         if(isLocalPlayer) 

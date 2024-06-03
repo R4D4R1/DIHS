@@ -25,6 +25,8 @@ public class SteamLobby : MonoBehaviour
             return;
         }
 
+        HostLobby();
+
         _lobbyCreated = Callback<LobbyCreated_t>.Create(OnLobbyCreated);
         _gameLobbyJoinRequested = Callback<GameLobbyJoinRequested_t>.Create(OnGameLobbyJoinRequested);
         _gameLobbyEnter = Callback<LobbyEnter_t>.Create(OnGameLobbyEnter);
