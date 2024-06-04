@@ -10,10 +10,7 @@ public class BulletPoolManager : MonoBehaviour
     public GameObject bulletHolePrefab;
     public List<GameObject> bulletHoleList;
 
-
-
-
-    void Start()
+    void Awake()
     {
         if(instance == null)
         {

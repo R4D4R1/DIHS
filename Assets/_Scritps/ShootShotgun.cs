@@ -7,14 +7,14 @@ public class ShotGun : Gun
     {
         Debug.Log("Shoot ShotGun");
 
-        particleSystem.Play();
-        
         ProcessRecoil();
-        //Для каждой дробинки своя пуля
+        DecreaseAmmo();
+
+        //Для каждой пули свои дробинки
 
         for (int i = 0; i < 9; i++)
         {
-            Vector3 offset = new Vector3(Random.Range(-10,10)/100f,Random.Range(-10,10)/100f,Random.Range(-10,10)/100f);
+            Vector3 offset = new Vector3(Random.Range(-5,5)/100f,Random.Range(-5,5)/100f,Random.Range(-5,5)/100f);
             HitSomething(offset);
         }
 
