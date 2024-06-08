@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_LayerNames:
   - Default
-  - Gun
+  - Pistol
   - BigGun
   - PistolMagazine
-  - 
-  - 
-  - 
+  - AKMagazine
+  - GunGrip
+  - ShotgunShell
   - 
   - 
   - 
