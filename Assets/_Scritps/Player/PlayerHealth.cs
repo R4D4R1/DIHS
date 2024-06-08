@@ -6,6 +6,4 @@ public class PlayerHealth : Target
     {
         HP = hp;
     }
-
-    public voi
 }
