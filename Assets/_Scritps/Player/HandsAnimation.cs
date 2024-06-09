@@ -1,7 +1,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Mirror;
 
-public class HandsAnimation : MonoBehaviour
+
+public class HandsAnimation : NetworkBehaviour
 {
 
     [SerializeField] private InputActionReference gripReference;
@@ -9,6 +11,14 @@ public class HandsAnimation : MonoBehaviour
 
     [SerializeField] private Animator animator;
 
+
+    private void Start()
+    {
+        if(!isOwned)
+        {
+            this.enabled = false;
+        }    
+    }
 
     private void Update()
     {
