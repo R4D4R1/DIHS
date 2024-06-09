@@ -8,6 +8,7 @@ TagManager:
   - FxTemporaire
   - LeftHand
   - RightHand
+  - Socket
   layers:
   - Default
   - TransparentFX

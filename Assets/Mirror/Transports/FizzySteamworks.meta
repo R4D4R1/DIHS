@@ -1,7 +1,12 @@
 fileFormatVersion: 2
+<<<<<<< Updated upstream:Assets/Mirror/Transports/FizzySteamworks.meta
 guid: ee2435e802f394a40a4662fc30d96507
 folderAsset: yes
 DefaultImporter:
+=======
+guid: f86a0f02a408fb84aa51d95357e8146f
+PrefabImporter:
+>>>>>>> Stashed changes:Assets/Prefabs/XR Origin (XR Rig).prefab.meta
   externalObjects: {}
   userData: 
   assetBundleName: 

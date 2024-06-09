@@ -22,11 +22,11 @@ public class LoadShotgunShells : XRSocketInteractor
             // «¿–ﬂƒ»À» œŒ—À≈ƒÕ»… œ¿“–ŒÕ
             if (shotgun.GetAmmo() == shotgun.GetMaxAmmo())
             {
-                Debug.Log("Last bullet");
+                //Debug.Log("Last bullet");
                 noSpaceForAmmo.Invoke();
             }
 
-            StartCoroutine(DestroyAmmo(ShotgunShell.interactableObject.transform.gameObject));
+            //StartCoroutine(DestroyAmmo(ShotgunShell.interactableObject.transform.gameObject));
         }
 
 

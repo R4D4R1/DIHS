@@ -4,7 +4,6 @@ using TMPro;
 using System.Collections.Generic;
 using System.Collections;
 using DG.Tweening;
-using UnityEngine.UIElements;
 
 public abstract class Weapon : XRGrabInteractable
 {
@@ -15,10 +14,11 @@ public abstract class Weapon : XRGrabInteractable
     [SerializeField] protected bool autoFireMode;
 
 
-    private Coroutine firingRoutine = null;
-    private WaitForSeconds wait = null;
+    protected Coroutine firingRoutine = null;
+    protected WaitForSeconds wait = null;
     protected int ammoInMagazine = 0;
-    private GameObject magazine;
+    protected GameObject magazine;
+    protected bool magazineIsLoaded;
 
     [Space(30)]
 
@@ -47,6 +47,8 @@ public abstract class Weapon : XRGrabInteractable
     [SerializeField] private AudioClip shootSound;
     [SerializeField] private AudioClip noBulletSound;
     [SerializeField] public AudioClip reloadingSound;
+    [SerializeField] private LayerMask undestractableLayer;
+
 
     [Space(30)]
 
@@ -60,8 +62,9 @@ public abstract class Weapon : XRGrabInteractable
     [SerializeField] protected Transform leftHandAttachTransform;
     [SerializeField] protected Transform rightHandAttachTransform;
 
-    [SerializeField] private LayerMask undestractableLayer;
+    [Space(30)]
 
+    [Header("Two Hands Grab")]
     public List<XRSimpleInteractable> secondHandGrabpoints = new List<XRSimpleInteractable>();
     private IXRSelectInteractor secondInteractor;
     private Quaternion attachIntialRoation;
@@ -71,7 +74,6 @@ public abstract class Weapon : XRGrabInteractable
     private Quaternion intialRotationOffset;
 
     protected RaycastHit hit;
-
 
     private void Start()
     {
@@ -102,6 +104,12 @@ public abstract class Weapon : XRGrabInteractable
     public void SetMagazine(GameObject magazineRequired)
     {
         magazine = magazineRequired;
+        magazineIsLoaded = true;
+    }
+
+    public void MagazineIsNotLoaded()
+    {
+        magazineIsLoaded = false;
     }
 
     public void DeactivateGrabMagazineInGun()
@@ -126,92 +134,11 @@ public abstract class Weapon : XRGrabInteractable
     public void DecreaseAmmo()
     {
         ammoInMagazine--;
+        if(magazineIsLoaded)
+            magazine.GetComponent<Magazine>().SetAmmo(ammoInMagazine);
         if (ammoInMagazine < 0)
             ammoInMagazine = 0;
     }
-
-    public void AttemptToShoot(Vector3 recoilOffset, Transform boltTransform, float targetX)
-    {
-        //Audiosources for sounds
-        AudioPoolExample audioPoolExample = this.gameObject.GetComponent<AudioPoolExample>();
-
-        if (ammoInMagazine > 0)
-        {
-            if (autoFireMode)
-                firingRoutine = StartCoroutine(FiringSequence(audioPoolExample, recoilOffset, boltTransform, targetX));
-            else
-            {
-                // MOVE BOLT
-                DOTween.Sequence()
-                .Append(boltTransform.DOLocalMoveX(targetX, 0.04f))
-                .Append(boltTransform.DOLocalMoveX(startX, 0.04f));
-
-                DecreaseAmmo();
-                ProcessRecoil();
-                particleSystem.Play();
-                audioPoolExample.PlayClip(shootSound);
-                HitSomething(recoilOffset);
-                ammoText.text = ammoInMagazine.ToString();
-            }
-        }
-        else
-        {
-            audioPoolExample.PlayClip(noBulletSound);
-        }
-        ammoText.text = ammoInMagazine.ToString();
-    }
-
-    public void AttemptToShootShotGun(float recoilOffset,float targetX)
-    {
-        //Audiosources for sounds
-        AudioPoolExample audioPoolExample = this.gameObject.GetComponent<AudioPoolExample>();
-
-        if (ammoInMagazine > 0)
-        {
-            DOTween.Sequence()
-                .Append(boltTransform.DOLocalMoveX(targetX, 0.04f))
-                .Append(boltTransform.DOLocalMoveX(startX, 0.04f));
-
-            DecreaseAmmo();
-            ProcessRecoil();
-            particleSystem.Play();
-            audioPoolExample.PlayClip(shootSound);
-            for (int i = 0; i < 9; i++)
-            {
-                Vector3 offset = new Vector3(Random.Range(-recoilOffset, recoilOffset) / 100f,
-                Random.Range(-recoilOffset, recoilOffset) / 100f, Random.Range(-recoilOffset, recoilOffset) / 100f);
-                HitSomething(offset);
-            }
-        }
-        else
-        {
-            audioPoolExample.PlayClip(noBulletSound);
-        }
-        ammoText.text = ammoInMagazine.ToString();
-    }
-
-    private IEnumerator FiringSequence(AudioPoolExample audioPoolExample, Vector3 offset, Transform boltTransform, float targetX)
-    {
-        while (gameObject.activeSelf && ammoInMagazine > 0)
-        {
-            DOTween.Sequence()
-                .Append(boltTransform.DOLocalMoveX(targetX, 0.04f))
-                .Append(boltTransform.DOLocalMoveX(startX, 0.04f));
-            DecreaseAmmo();
-            ProcessRecoil();
-            particleSystem.Play();
-            audioPoolExample.PlayClip(shootSound);
-            HitSomething(offset);
-            ammoText.text = ammoInMagazine.ToString();
-            yield return wait;
-
-        }
-    }
-
-    //public void StopFiring()
-    //{
-    //    StopCoroutine(firingRoutine);
-    //}
 
 
     public void ProcessRecoil()
@@ -231,6 +158,79 @@ public abstract class Weapon : XRGrabInteractable
                 recoilBody.transform.localRotation = Quaternion.AngleAxis(-5 * recoilForce, Vector3.right);
             }
         }
+    }
+
+
+    //
+    public void AttemptToShoot(Vector3 recoilOffset, Transform boltTransform, float targetX)
+    {
+        //Audiosources for sounds
+        AudioPoolExample audioPoolExample = this.gameObject.GetComponent<AudioPoolExample>();
+
+        if (ammoInMagazine > 0)
+        {
+            if (autoFireMode)
+                firingRoutine = StartCoroutine(FiringSequence(audioPoolExample, recoilOffset, boltTransform, targetX));
+            else
+            {
+                StartShoot(audioPoolExample, boltTransform, targetX);
+                HitSomething(recoilOffset);
+            }
+        }
+        else
+        {
+            audioPoolExample.PlayClip(noBulletSound);
+        }
+        ammoText.text = ammoInMagazine.ToString();
+    }
+
+    public void AttemptToShootShotGun(float recoilOffset,float targetX)
+    {
+        //Audiosources for sounds
+        AudioPoolExample audioPoolExample = this.gameObject.GetComponent<AudioPoolExample>();
+
+        if (ammoInMagazine > 0)
+        {
+            StartShoot(audioPoolExample, boltTransform, targetX);
+
+            for (int i = 0; i < 9; i++)
+            {
+                Vector3 offset = new Vector3(Random.Range(-recoilOffset, recoilOffset) / 100f,
+                Random.Range(-recoilOffset, recoilOffset) / 100f, Random.Range(-recoilOffset, recoilOffset) / 100f);
+                HitSomething(offset);
+            }
+        }
+        else
+        {
+            audioPoolExample.PlayClip(noBulletSound);
+        }
+        ammoText.text = ammoInMagazine.ToString();
+    }
+
+    private IEnumerator FiringSequence(AudioPoolExample audioPoolExample, Vector3 recoilOffset, Transform boltTransform, float targetX)
+    {
+        while (gameObject.activeSelf && ammoInMagazine > 0)
+        {
+            StartShoot(audioPoolExample, boltTransform, targetX);
+            HitSomething(recoilOffset);
+            yield return wait;
+
+        }
+    }
+
+
+
+    private void StartShoot(AudioPoolExample audioPoolExample, Transform boltTransform, float targetX)
+    {
+        DOTween.Sequence()
+            .Append(boltTransform.DOLocalMoveX(targetX, 0.04f))
+            .Append(boltTransform.DOLocalMoveX(startX, 0.04f));
+        DecreaseAmmo();
+        ProcessRecoil();
+        particleSystem.Play();
+        audioPoolExample.PlayClip(shootSound);
+        ammoText.text = ammoInMagazine.ToString();
+
     }
 
 
@@ -349,12 +349,12 @@ public abstract class Weapon : XRGrabInteractable
 
         base.OnSelectEntering(args);
     }
-        public override bool IsSelectableBy(IXRSelectInteractor interactor)
-    {
-        bool isalreadygrabbed = firstInteractorSelecting != null && !interactor.Equals(firstInteractorSelecting);
-        return base.IsSelectableBy(interactor) && !isalreadygrabbed;
-    }
 
+    //public override bool IsSelectableBy(IXRSelectInteractor interactor)
+    //{
+    //        bool isalreadygrabbed = firstInteractorSelecting != null && !interactor.Equals(firstInteractorSelecting);
+    //        return base.IsSelectableBy(interactor) && !isalreadygrabbed;
+    //}
 
 
     public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)

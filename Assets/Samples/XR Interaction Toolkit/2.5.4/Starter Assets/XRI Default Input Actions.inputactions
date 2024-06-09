@@ -2600,6 +2600,45 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Gun In Hand Interaction",
+            "id": "6c1fbe60-a356-4dc5-bd5d-6abf28c405da",
+            "actions": [
+                {
+                    "name": "MagazineRelease",
+                    "type": "Button",
+                    "id": "6da88537-a9cc-4cfa-bf69-1bc6e9c835a3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "8a4a0be6-91d8-4d84-b165-57c0522791ba",
+                    "path": "<XRController>{LeftHand}/{PrimaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MagazineRelease",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "06e0e07e-6054-4e7a-a0aa-ff1e5bcc93ba",
+                    "path": "<XRController>{RightHand}/{PrimaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MagazineRelease",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

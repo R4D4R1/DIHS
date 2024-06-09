@@ -14,10 +14,19 @@ public class LoadMagazineSocketInteractor : XRSocketInteractor
 
     protected override void OnSelectExited(SelectExitEventArgs magazineData)
     {
-        magazineData.interactableObject.transform.gameObject.GetComponent<Magazine>().SetAmmo(transform.parent.GetComponent<Weapon>().GetAmmo());
         GetComponent<AudioSource>().clip = transform.parent.GetComponent<Weapon>().reloadingSound;
         GetComponent<AudioSource>().Play();
         transform.parent.GetComponent<Weapon>().SetAmmoInMagazine(0);
+        transform.parent.GetComponent<Weapon>().MagazineIsNotLoaded();
         base.OnSelectExited(magazineData);
     }
+    protected override void OnDisable()
+    {
+        GetComponent<AudioSource>().clip = transform.parent.GetComponent<Weapon>().reloadingSound;
+        GetComponent<AudioSource>().Play();
+        transform.parent.GetComponent<Weapon>().SetAmmoInMagazine(0);
+        transform.parent.GetComponent<Weapon>().MagazineIsNotLoaded();
+        base.OnDisable();
+    }
+
 }

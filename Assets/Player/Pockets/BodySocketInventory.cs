@@ -8,11 +8,16 @@ public class bodySocket
     public GameObject gameObject;
     [Range(0.01f, 1f)]
     public float heightRatio;
+
+
+
 }
 
 public class BodySocketInventory : MonoBehaviour
-
 {
+    [Range(0.01f, 1f)]
+    public float chestOffsetZ;
+
     public GameObject HMD;
     public bodySocket[] bodySockets;
 
@@ -20,8 +25,9 @@ public class BodySocketInventory : MonoBehaviour
     private Quaternion _currentHMDRotation;
     void Update()
     {
-        _currentHMDlocalPosition = HMD.transform.localPosition;
         _currentHMDRotation = HMD.transform.rotation;
+        _currentHMDlocalPosition = HMD.transform.localPosition + HMD.transform.forward*chestOffsetZ;
+
         foreach(var bodySocket in bodySockets)
         {
             UpdateBodySocketHeight(bodySocket);
@@ -32,7 +38,8 @@ public class BodySocketInventory : MonoBehaviour
     private void UpdateBodySocketHeight(bodySocket bodySocket)
     {
 
-        bodySocket.gameObject.transform.localPosition = new Vector3(bodySocket.gameObject.transform.localPosition.x,(_currentHMDlocalPosition.y * bodySocket.heightRatio), bodySocket.gameObject.transform.localPosition.z);
+        bodySocket.gameObject.transform.localPosition = new Vector3(bodySocket.gameObject.transform.localPosition.x,
+            (_currentHMDlocalPosition.y * bodySocket.heightRatio), bodySocket.gameObject.transform.localPosition.z);
     }
 
     private void UpdateSocketInventory()
