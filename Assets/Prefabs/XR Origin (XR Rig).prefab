@@ -1299,8 +1299,8 @@ GameObject:
   - component: {fileID: 9182911864660359627}
   - component: {fileID: 3674529856468431859}
   m_Layer: 6
-  m_Name: Mirror Multiplayer
-  m_TagString: Untagged
+  m_Name: HardwareRig
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
