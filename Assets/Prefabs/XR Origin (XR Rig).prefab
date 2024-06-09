@@ -622,6 +622,7 @@ GameObject:
   - component: {fileID: 6634491828558512037}
   - component: {fileID: 1536016121953233384}
   - component: {fileID: 1841703040830641323}
+  - component: {fileID: 3420725568608472195}
   m_Layer: 0
   m_Name: AttachPoint
   m_TagString: Untagged
@@ -774,6 +775,18 @@ ConfigurableJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &3420725568608472195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1943779585996645536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2ea67232f14de540973100b08fd20da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1985212970770628020
 GameObject:
   m_ObjectHideFlags: 0
@@ -1275,6 +1288,61 @@ Transform:
   - {fileID: 8621208302130047602}
   m_Father: {fileID: 2388503925303521074}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3702590404617974242
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9182911864660359627}
+  - component: {fileID: 3674529856468431859}
+  m_Layer: 6
+  m_Name: Mirror Multiplayer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9182911864660359627
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3702590404617974242}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5856043239158090901}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3674529856468431859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3702590404617974242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09e80e2b9324e38409cc43bb192b64a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftHand: {fileID: 6302877800841032000}
+  rightHand: {fileID: 3420725568608472195}
+  headSet: {fileID: 7412534561536160600}
+  playerPosition: {x: 0, y: 0, z: 0}
+  playerRotation: {x: 0, y: 0, z: 0, w: 0}
+  leftHandPosition: {x: 0, y: 0, z: 0}
+  leftHandRotation: {x: 0, y: 0, z: 0, w: 0}
+  rightHandPosition: {x: 0, y: 0, z: 0}
+  rightHandRotation: {x: 0, y: 0, z: 0, w: 0}
+  headsetPosition: {x: 0, y: 0, z: 0}
+  headsetRotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &3772078282195765401
 GameObject:
   m_ObjectHideFlags: 0
@@ -1413,6 +1481,7 @@ GameObject:
   - component: {fileID: 4639475245261303497}
   - component: {fileID: 8925607340440448875}
   - component: {fileID: 5112813441395052621}
+  - component: {fileID: 6302877800841032000}
   m_Layer: 0
   m_Name: AttachPoint
   m_TagString: Untagged
@@ -1565,6 +1634,18 @@ ConfigurableJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &6302877800841032000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4380506211813385330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2ea67232f14de540973100b08fd20da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4532970460447497329
 GameObject:
   m_ObjectHideFlags: 0
@@ -2248,6 +2329,7 @@ Transform:
   m_Children:
   - {fileID: 4848839587538245938}
   - {fileID: 2699267143479355890}
+  - {fileID: 9182911864660359627}
   m_Father: {fileID: 7039025883809459296}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5474808098388225136
@@ -3311,6 +3393,7 @@ GameObject:
   - component: {fileID: 908862358932169333}
   - component: {fileID: 3726145618093938662}
   - component: {fileID: 8089900828329147911}
+  - component: {fileID: 7412534561536160600}
   m_Layer: 6
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -3545,6 +3628,18 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
+--- !u!114 &7412534561536160600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7121710851050321540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6661573316473094ea2e3f430e589ff5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7158241629140015232
 GameObject:
   m_ObjectHideFlags: 0
@@ -3632,7 +3727,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7445077690783004759}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1.1176, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
