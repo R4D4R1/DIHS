@@ -1,6 +1,4 @@
 using Mirror;
-using Org.BouncyCastle.Asn1.Cmp;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BulletPoolManager : NetworkBehaviour
@@ -10,9 +8,10 @@ public class BulletPoolManager : NetworkBehaviour
     [SerializeField] private int spawnCount;
     public int bulletDestroyTime;
     public GameObject bulletHolePrefab;
-    [SyncVar]
-    public List<GameObject> bulletHoleList;
 
+    public readonly SyncList<NetworkIdentity> bulletHoleSyncList = new SyncList<NetworkIdentity>();
+
+    [Server]
     public override void OnStartServer()
     {
         if (instance == null)
@@ -24,38 +23,20 @@ public class BulletPoolManager : NetworkBehaviour
             Destroy(gameObject);
         }
 
-        for (int i = 0; i < spawnCount; i++)
-        {
-            GameObject bulletHole = Instantiate(bulletHolePrefab) as GameObject;
-            NetworkServer.Spawn(bulletHole);
-            bulletHoleList.Add(bulletHole);
-            bulletHole.transform.parent = this.transform;
-            bulletHole.SetActive(false);
-
-        }
+        SpawnDecals();
 
         base.OnStartServer();
     }
 
-    //protected virtual void Awake()
-    //{
-    //    if(instance == null)
-    //    {
-    //        instance = this;
-    //    }
-    //    else if(instance == this)
-    //    {
-    //        Destroy(gameObject);
-    //    }
-
-    //    for(int i = 0; i < spawnCount;i++)
-    //    {
-    //        GameObject bulletHole = Instantiate(bulletHolePrefab) as GameObject;
-    //        NetworkServer.Spawn(bulletHole);
-    //        bulletHoleList.Add(bulletHole);
-    //        bulletHole.transform.parent = this.transform;
-    //        bulletHole.SetActive(false);
-
-    //    }
-    //}
+    [Server]
+    public void SpawnDecals()
+    {
+        for (int i = 0; i < spawnCount; i++)
+        {
+            GameObject bulletHole = Instantiate(bulletHolePrefab);
+            NetworkServer.Spawn(bulletHole);
+            bulletHoleSyncList.Add(bulletHole.GetComponent<NetworkIdentity>());
+            //bulletHole.transform.parent = this.transform;
+        }       
+    }
 }

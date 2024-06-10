@@ -1,4 +1,3 @@
-using UnityEditor.Rendering.Universal;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -6,27 +5,36 @@ using UnityEngine.Rendering.Universal;
 public class BulletBehavior : MonoBehaviour
 {
     [SerializeField] private DecalProjector decalProjector;
-    float time = 0;
-
-    void OnEnable()
-    {
-        Invoke("OnDisable",BulletPoolManager.instance.bulletDestroyTime);
-
-    }
+    private bool isAvaliable = false;
+    private float time = 0;
 
     private void Update()
     {
-        float val = Mathf.Lerp(1f,0f,time);
-        time += Time.deltaTime/BulletPoolManager.instance.bulletDestroyTime;
-        
-        decalProjector.fadeFactor = val;
+        if(isAvaliable)
+        {
 
-        
+            time = 0;
+            float val = Mathf.Lerp(1f, 0f, time);
+            time += Time.deltaTime / BulletPoolManager.instance.bulletDestroyTime;
+
+            decalProjector.fadeFactor = val;
+
+            if(Mathf.Approximately(val, 0)) 
+            {
+                isAvaliable = false;
+            }
+        }
+      
     }
 
-    private void OnDisable()
+    public void StartHit()
     {
-        this.transform.gameObject.SetActive(false);
+        isAvaliable = true;
+    }
+
+    public bool IsAvaliable()
+    {
+        return isAvaliable;
     }
 
 }

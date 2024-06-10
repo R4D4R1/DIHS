@@ -4,6 +4,7 @@ using TMPro;
 using System.Collections.Generic;
 using System.Collections;
 using DG.Tweening;
+using Mirror;
 
 public abstract class Weapon : XRGrabInteractable
 {
@@ -246,18 +247,18 @@ public abstract class Weapon : XRGrabInteractable
 
                 if (hit.transform.gameObject.layer == Mathf.Log(undestractableLayer.value, 2))
                 {
-                    for (int i = 0; i < BulletPoolManager.instance.bulletHoleList.Count; i++)
+                    for (int i = 0; i < BulletPoolManager.instance.bulletHoleSyncList.Count; i++)
                     {
-                        var bulletHoleElementInstance = BulletPoolManager.instance.bulletHoleList[i];
-                        if (bulletHoleElementInstance.activeInHierarchy == false)
+                        var bulletHoleElementInstance = BulletPoolManager.instance.bulletHoleSyncList[i];
+                        if (bulletHoleElementInstance.GetComponent<BulletBehavior>().IsAvaliable() == true)
                         {
 
-                            bulletHoleElementInstance.SetActive(true);
+                            bulletHoleElementInstance.GetComponent<BulletBehavior>().StartHit();
                             bulletHoleElementInstance.transform.rotation = Quaternion.LookRotation(-hit.normal);
                             bulletHoleElementInstance.transform.position = hit.point + hit.normal.normalized * 0.01f;
 
                             //CHANGE BEHAVIOR ON IMPACT SOUND
-                            PlayImpactSounds(bulletHoleElementInstance);
+                            PlayImpactSounds(bulletHoleElementInstance.gameObject);
 
                             bulletHoleElementInstance.transform.parent = hit.transform;
 
@@ -265,16 +266,16 @@ public abstract class Weapon : XRGrabInteractable
                         }
                         else
                         {
-                            if (i == BulletPoolManager.instance.bulletHoleList.Count - 1) // Last Bullet 
+                            if (i == BulletPoolManager.instance.bulletHoleSyncList.Count - 1) // Last Bullet 
                             {
                                 GameObject newBulletHole = Instantiate(BulletPoolManager.instance.bulletHolePrefab);
                                 newBulletHole.transform.parent = BulletPoolManager.instance.transform;
-                                newBulletHole.SetActive(false);
+
 
                                 //CHANGE BEHAVIOR ON IMPACT SOUND
-                                PlayImpactSounds(bulletHoleElementInstance);
+                                PlayImpactSounds(bulletHoleElementInstance.gameObject);
 
-                                BulletPoolManager.instance.bulletHoleList.Add(newBulletHole);
+                                BulletPoolManager.instance.bulletHoleSyncList.Add(newBulletHole.GetComponent<NetworkIdentity>());
                             }
                         }
                     }

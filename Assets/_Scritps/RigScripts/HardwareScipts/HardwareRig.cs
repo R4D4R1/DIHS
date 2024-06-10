@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.XR.CoreUtils;
 using UnityEngine;
 
 public class HardwareRig : MonoBehaviour
@@ -26,7 +27,7 @@ public class HardwareRig : MonoBehaviour
         playerRotation = transform.rotation;
         leftHandPosition = leftHand.transform.position;
         leftHandRotation = leftHand.transform.rotation;
-        rightHandPosition = rightHand.transform.position;
+        rightHandPosition = rightHand.transform.GetWorldPose().position;
         rightHandRotation = rightHand.transform.rotation;
         headsetPosition = headSet.transform.position;
         headsetRotation = headSet.transform.rotation;
