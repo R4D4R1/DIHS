@@ -23,13 +23,14 @@ public class Pistol : Weapon
     }
 
     public override void ShootGun()
-    {        
+    {
         AttemptToShoot(Vector3.zero, boltTransform, targetX);
     }
 
     protected void Release(InputAction.CallbackContext callbackContext)
     {
-        if(magazineIsLoaded)
+        Debug.Log("Attempt Relaod");
+        if (magazineIsLoaded)
         {
             StartCoroutine(DisableSocket());
         }

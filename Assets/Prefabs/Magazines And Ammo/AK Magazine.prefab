@@ -18,6 +18,8 @@ GameObject:
   - component: {fileID: 2299505040848645943}
   - component: {fileID: 9108646830939188460}
   - component: {fileID: 823071704807555807}
+  - component: {fileID: 1577692644794440810}
+  - component: {fileID: 4344350609498195833}
   m_Layer: 7
   m_Name: AK Magazine
   m_TagString: Untagged
@@ -70,7 +72,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 7a242e6048c2db04297091e455c8d329, type: 2}
-  - {fileID: -4246479402191905792, guid: 6f0cbd50a1ab90441a528002c394d8b4, type: 3}
+  - {fileID: 2100000, guid: 5583f99a9eed5ca4bb44807732e8577d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -258,11 +260,11 @@ MonoBehaviour:
   m_AngularVelocityDamping: 1
   m_AngularVelocityScale: 1
   m_TrackPosition: 1
-  m_SmoothPosition: 1
+  m_SmoothPosition: 0
   m_SmoothPositionAmount: 15
   m_TightenPosition: 0.1
   m_TrackRotation: 1
-  m_SmoothRotation: 1
+  m_SmoothRotation: 0
   m_SmoothRotationAmount: 15
   m_TightenRotation: 0.1
   m_TrackScale: 1
@@ -377,6 +379,37 @@ MonoBehaviour:
   lerpVelocityAmount: 0.5
   lerpPositionAmount: 0.5
   clientAuthority: 0
+--- !u!114 &1577692644794440810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2065945905731150827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 686fcf27d9ff41442a127b1585785293, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4344350609498195833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2065945905731150827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aea361d1fed32494495c7036d52f941c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  currentlyAttachedToSocket: {fileID: 0}
+  grabbableLayerName: GunGrip
+  grabbableOnStart: 1
+  grabbable: 1
 --- !u!1 &3993253389718851407
 GameObject:
   m_ObjectHideFlags: 0

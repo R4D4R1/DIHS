@@ -1977,5 +1977,10 @@ namespace Mirror
                 fullUpdateDuration.End();
             }
         }
+
+        public static void SpawnWithClientAuthority(object go, NetworkConnectionToClient connectionToClient)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,25 +1,30 @@
+using Mirror;
 using UnityEngine;
 
-public class BodyPart : Target
+public class BodyPart : NetworkBehaviour
 {
     [Range(0f, 2f)]
     [SerializeField] private float damageCoef;
-    [SerializeField] private PlayerHealth playerHealth;
+    [SerializeField] private PlayerHealthNetwork playerHealth;
+
+    private void Update()
+    {
+        if(!isLocalPlayer)
+        {
+            return;
+        }
+    }
 
     public float GetDamageCoef()
     {
         return damageCoef;
     }
 
-    public override void TakeDamage(float damage)
+    public void TakeDamage(float damage)
     {
-        playerHealth.SetHealth(HP - damage * damageCoef);
+        playerHealth.SetHealth(playerHealth.GetHP() - damage * damageCoef);
+        Debug.Log(playerHealth.GetHP());
 
-        if (HP < 0)
-        {
-            //gameObject.SetActive(false);
-            Destroy(gameObject);
-        }
     }
 
 }

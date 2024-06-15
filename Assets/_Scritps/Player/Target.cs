@@ -1,18 +1,33 @@
+using Mirror;
 using UnityEngine;
 
-public class Target : MonoBehaviour
+public class Target : NetworkBehaviour
 {
-    [SerializeField] protected float HP { get; set; } = 100;
+    [SyncVar]
+    [SerializeField] private float HP;
+
+    public float GetHP()
+    {
+        return HP;
+    }
+
+    public void SetHP(float hp)
+    {
+        this.HP = hp;
+    }
 
     public virtual void TakeDamage(float damage)
     {
-        HP -= damage;
-        //Debug.Log(gameObject.name + " " + HP);
+        SetHP(GetHP() - damage);
+
+        Debug.Log(gameObject.name + " " + HP);
         
-        if(HP<0)
+        if(GetHP() <= 0)
         {
-            //gameObject.SetActive(false);
-            Destroy(gameObject);
+            Debug.Log(gameObject.name + " Dead");
+
+            gameObject.SetActive(false);
+            //Destroy(gameObject);
         }
     }
 }

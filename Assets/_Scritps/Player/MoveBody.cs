@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MoveBody : MonoBehaviour
@@ -10,7 +8,7 @@ public class MoveBody : MonoBehaviour
 
     private void Update()
     {
-        transform.position = new Vector3(headTransform.position.x, offsetY, headTransform.position.z);
+        transform.position = new Vector3(headTransform.position.x, headTransform.position.y + offsetY, headTransform.position.z);
         transform.localRotation = new Quaternion(0f, headTransform.localRotation.y, 0f,1f);
     }
 }

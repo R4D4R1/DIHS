@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 public class NetworkRig : NetworkBehaviour
@@ -9,6 +7,9 @@ public class NetworkRig : NetworkBehaviour
     public NetworkHand leftNetworkHand;
     public NetworkHand rightNetworkHand;
     public NetworkHead networkHead;
+    public NetworkBody networkBody;
+
+    [SerializeField] private float offset;
 
     private void Start()
     {     
@@ -26,6 +27,12 @@ public class NetworkRig : NetworkBehaviour
             leftNetworkHand.transform.SetPositionAndRotation(hardwareRig.leftHandPosition, hardwareRig.leftHandRotation);
             rightNetworkHand.transform.SetPositionAndRotation(hardwareRig.rightHandPosition, hardwareRig.rightHandRotation);
             networkHead.transform.SetPositionAndRotation(hardwareRig.headsetPosition, hardwareRig.headsetRotation);
+
+            networkBody.transform.position = new Vector3(hardwareRig.bodyPosition.x, hardwareRig.bodyPosition.y + offset, hardwareRig.bodyPosition.z);
+            networkBody.transform.rotation = Quaternion.Euler(0f, hardwareRig.headsetRotation.y , 0f);
+            Debug.Log(hardwareRig.headsetRotation.y);
+            //networkBody.transform.rotation = new Quaternion(0f, hardwareRig.headsetRotation.y, 0f, 1f);
+
         }
     }
 }

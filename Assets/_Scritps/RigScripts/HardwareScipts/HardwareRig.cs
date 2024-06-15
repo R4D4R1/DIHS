@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.XR.CoreUtils;
 using UnityEngine;
 
 public class HardwareRig : MonoBehaviour
@@ -8,6 +5,7 @@ public class HardwareRig : MonoBehaviour
     public HardwareHand leftHand;
     public HardwareHand rightHand;
     public HardwareHead headSet;
+    public HardwareBody body;
 
     public Vector3 playerPosition;
     public Quaternion playerRotation;
@@ -21,16 +19,21 @@ public class HardwareRig : MonoBehaviour
     public Vector3 headsetPosition;
     public Quaternion headsetRotation;
 
+    public Vector3 bodyPosition;
+    public Quaternion bodyRotation;
+
     private void LateUpdate()
     {
         playerPosition = transform.position;
         playerRotation = transform.rotation;
         leftHandPosition = leftHand.transform.position;
         leftHandRotation = leftHand.transform.rotation;
-        rightHandPosition = rightHand.transform.GetWorldPose().position;
+        rightHandPosition = rightHand.transform.position;
         rightHandRotation = rightHand.transform.rotation;
         headsetPosition = headSet.transform.position;
         headsetRotation = headSet.transform.rotation;
+        bodyPosition = body.transform.position;
+        bodyRotation = body.transform.rotation;
     }
 
 }

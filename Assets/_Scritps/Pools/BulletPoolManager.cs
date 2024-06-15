@@ -9,9 +9,9 @@ public class BulletPoolManager : NetworkBehaviour
     public int bulletDestroyTime;
     public GameObject bulletHolePrefab;
 
-    public readonly SyncList<NetworkIdentity> bulletHoleSyncList = new SyncList<NetworkIdentity>();
+    public SyncList<NetworkIdentity> bulletHoleSyncList = new SyncList<NetworkIdentity>();
 
-    [Server]
+
     public override void OnStartServer()
     {
         if (instance == null)
@@ -23,12 +23,15 @@ public class BulletPoolManager : NetworkBehaviour
             Destroy(gameObject);
         }
 
-        SpawnDecals();
+        if(isServer)
+        {
+            //SpawnDecals();
+        }
 
         base.OnStartServer();
     }
 
-    [Server]
+
     public void SpawnDecals()
     {
         for (int i = 0; i < spawnCount; i++)
@@ -39,4 +42,5 @@ public class BulletPoolManager : NetworkBehaviour
             //bulletHole.transform.parent = this.transform;
         }       
     }
+
 }

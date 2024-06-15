@@ -48,7 +48,8 @@ GameObject:
   - component: {fileID: 4364908693106592128}
   - component: {fileID: 2790232856062299721}
   - component: {fileID: 4457160958105057370}
-  - component: {fileID: 1442741682423673903}
+  - component: {fileID: 2590285891636475257}
+  - component: {fileID: 7877661318889969099}
   m_Layer: 7
   m_Name: Pistol Magazine
   m_TagString: Untagged
@@ -288,11 +289,11 @@ MonoBehaviour:
   m_AngularVelocityDamping: 1
   m_AngularVelocityScale: 1
   m_TrackPosition: 1
-  m_SmoothPosition: 1
+  m_SmoothPosition: 0
   m_SmoothPositionAmount: 15
   m_TightenPosition: 0.1
   m_TrackRotation: 1
-  m_SmoothRotation: 1
+  m_SmoothRotation: 0
   m_SmoothRotationAmount: 15
   m_TightenRotation: 0.1
   m_TrackScale: 1
@@ -388,7 +389,7 @@ MonoBehaviour:
   rotationSensitivity: 0.01
   positionPrecision: 0.01
   scalePrecision: 0.01
---- !u!114 &1442741682423673903
+--- !u!114 &2590285891636475257
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -397,13 +398,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 6325411189298871581}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f032128052c95a46afb0ddd97d994cc, type: 3}
+  m_Script: {fileID: 11500000, guid: 686fcf27d9ff41442a127b1585785293, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 1
+--- !u!114 &7877661318889969099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6325411189298871581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aea361d1fed32494495c7036d52f941c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  target: {fileID: 6844951110665485903}
-  lerpVelocityAmount: 0.5
-  lerpPositionAmount: 0.5
-  clientAuthority: 0
+  currentlyAttachedToSocket: {fileID: 0}
+  grabbableLayerName: GunGrip
+  grabbableOnStart: 1
+  grabbable: 1

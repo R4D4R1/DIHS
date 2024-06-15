@@ -4,22 +4,21 @@ using TMPro;
 using System.Collections.Generic;
 using System.Collections;
 using DG.Tweening;
-using Mirror;
 
 public abstract class Weapon : XRGrabInteractable
 {
+    NetworkGunStats networkGunStats;
 
     [Header("Main Stats")]
-    [SerializeField] protected float damage;
+    [SerializeField] protected int damage;
     [SerializeField] protected float fireRate;
     [SerializeField] protected bool autoFireMode;
 
 
     protected Coroutine firingRoutine = null;
     protected WaitForSeconds wait = null;
-    protected int ammoInMagazine = 0;
     protected GameObject magazine;
-    protected bool magazineIsLoaded;
+    public bool magazineIsLoaded;
 
     [Space(30)]
 
@@ -38,8 +37,8 @@ public abstract class Weapon : XRGrabInteractable
     [Space(30)]
 
     [Header("Bolt")]
-    [SerializeField] protected Transform boltTransform;
-    [SerializeField] protected float targetX;
+    [SerializeField] public Transform boltTransform;
+    [SerializeField] public float targetX;
     private float startX;
 
     [Space(30)]
@@ -76,8 +75,19 @@ public abstract class Weapon : XRGrabInteractable
 
     protected RaycastHit hit;
 
+    protected override void Awake()
+    {
+
+        networkGunStats = GetComponent<NetworkGunStats>();
+        base.Awake();
+    }
+
     private void Start()
     {
+        
+        ammoText.text = networkGunStats.GetAmmo().ToString();
+        //Debug.Log(networkGunStats.GetAmmo());
+
         startX = boltTransform.localPosition.x;
 
         wait = new WaitForSeconds(60 / fireRate);
@@ -87,20 +97,13 @@ public abstract class Weapon : XRGrabInteractable
             item.selectEntered.AddListener(OnSecondHandGrab);
             item.selectExited.AddListener(OnSecondHandRelease);
         }
-
-        ammoText.text = ammoInMagazine.ToString();
     }
 
-    public int GetAmmo()
-    {
-        return ammoInMagazine;
-    }
-
-    public void SetAmmoInMagazine(int ammo)
-    {
-        ammoInMagazine = ammo;
-        ammoText.text = ammoInMagazine.ToString();
-    }
+    //public void SetAmmoInMagazine(int ammo)
+    //{
+    //    networkGunStats.SetAmmo(ammo);
+    //    ammoText.text = networkGunStats.GetAmmo().ToString();
+    //}
 
     public void SetMagazine(GameObject magazineRequired)
     {
@@ -131,47 +134,55 @@ public abstract class Weapon : XRGrabInteractable
 
     public abstract void ShootGun();
 
-
     public void DecreaseAmmo()
     {
-        ammoInMagazine--;
-        if(magazineIsLoaded)
-            magazine.GetComponent<Magazine>().SetAmmo(ammoInMagazine);
-        if (ammoInMagazine < 0)
-            ammoInMagazine = 0;
+        networkGunStats.SetAmmo(networkGunStats.GetAmmo()-1);
     }
 
 
-    public void ProcessRecoil()
+    //public void ProcessRecoil()
+    //{
+    //    if (recoilBody != null)
+    //    {
+    //        //Вторая рука взята
+    //        if (secondHandRigidbody != null)
+    //        {
+    //            recoilBody.AddForce(-transform.forward * recoilForce * .3f, ForceMode.Impulse);
+    //            secondHandRigidbody.AddForce(-transform.forward * recoilForce * .3f, ForceMode.Impulse);
+    //            recoilBody.transform.localRotation = Quaternion.AngleAxis(-1 * recoilForce, Vector3.right);
+    //        }
+    //        else
+    //        {
+    //            recoilBody.AddForce(-transform.forward * recoilForce, ForceMode.Impulse);
+    //            recoilBody.transform.localRotation = Quaternion.AngleAxis(-5 * recoilForce, Vector3.right);
+    //        }
+    //    }
+    //}
+
+
+    public void ReloadGun()
     {
-        if (recoilBody != null)
-        {
-            //Вторая рука взята
-            if (secondHandRigidbody != null)
-            {
-                recoilBody.AddForce(-transform.forward * recoilForce * .3f, ForceMode.Impulse);
-                secondHandRigidbody.AddForce(-transform.forward * recoilForce * .3f, ForceMode.Impulse);
-                recoilBody.transform.localRotation = Quaternion.AngleAxis(-1 * recoilForce, Vector3.right);
-            }
-            else
-            {
-                recoilBody.AddForce(-transform.forward * recoilForce, ForceMode.Impulse);
-                recoilBody.transform.localRotation = Quaternion.AngleAxis(-5 * recoilForce, Vector3.right);
-            }
-        }
-    }
 
+        GetComponent<NetworkGunStats>().SetAmmo(GetComponent<NetworkGunStats>().GetMaxAmmo());
+        ammoText.text = networkGunStats.GetAmmo().ToString();
+    }
 
     //
     public void AttemptToShoot(Vector3 recoilOffset, Transform boltTransform, float targetX)
     {
+
+
         //Audiosources for sounds
         AudioPoolExample audioPoolExample = this.gameObject.GetComponent<AudioPoolExample>();
 
-        if (ammoInMagazine > 0)
+        if (networkGunStats.GetAmmo() > 0)
         {
+
             if (autoFireMode)
+            {
                 firingRoutine = StartCoroutine(FiringSequence(audioPoolExample, recoilOffset, boltTransform, targetX));
+
+            }
             else
             {
                 StartShoot(audioPoolExample, boltTransform, targetX);
@@ -182,7 +193,7 @@ public abstract class Weapon : XRGrabInteractable
         {
             audioPoolExample.PlayClip(noBulletSound);
         }
-        ammoText.text = ammoInMagazine.ToString();
+        ammoText.text = networkGunStats.GetAmmo().ToString();
     }
 
     public void AttemptToShootShotGun(float recoilOffset,float targetX)
@@ -190,7 +201,7 @@ public abstract class Weapon : XRGrabInteractable
         //Audiosources for sounds
         AudioPoolExample audioPoolExample = this.gameObject.GetComponent<AudioPoolExample>();
 
-        if (ammoInMagazine > 0)
+        if (networkGunStats.GetAmmo() > 0)
         {
             StartShoot(audioPoolExample, boltTransform, targetX);
 
@@ -205,13 +216,15 @@ public abstract class Weapon : XRGrabInteractable
         {
             audioPoolExample.PlayClip(noBulletSound);
         }
-        ammoText.text = ammoInMagazine.ToString();
+        ammoText.text = networkGunStats.GetAmmo().ToString();
     }
 
     private IEnumerator FiringSequence(AudioPoolExample audioPoolExample, Vector3 recoilOffset, Transform boltTransform, float targetX)
     {
-        while (gameObject.activeSelf && ammoInMagazine > 0)
+        while (gameObject.activeSelf && networkGunStats.GetAmmo() > 0)
         {
+            firingRoutine = StartCoroutine(FiringSequence(audioPoolExample, recoilOffset, boltTransform, targetX));
+
             StartShoot(audioPoolExample, boltTransform, targetX);
             HitSomething(recoilOffset);
             yield return wait;
@@ -227,18 +240,16 @@ public abstract class Weapon : XRGrabInteractable
             .Append(boltTransform.DOLocalMoveX(targetX, 0.04f))
             .Append(boltTransform.DOLocalMoveX(startX, 0.04f));
         DecreaseAmmo();
-        ProcessRecoil();
+        //ProcessRecoil();
         particleSystem.Play();
         audioPoolExample.PlayClip(shootSound);
-        ammoText.text = ammoInMagazine.ToString();
+        ammoText.text = networkGunStats.GetAmmo().ToString();
 
     }
-
 
     // NEEDS OFFSET IF MULTIPLE PROJECTILES LIKE SHOTGUN();
     public void HitSomething(Vector3 offset)
     {
-
         if (Physics.Raycast(muzzlePointTransform.position, muzzlePointTransform.forward + offset, out hit, 100))
         {
             if (hit.collider.gameObject.GetComponent<Collider>())
@@ -247,38 +258,37 @@ public abstract class Weapon : XRGrabInteractable
 
                 if (hit.transform.gameObject.layer == Mathf.Log(undestractableLayer.value, 2))
                 {
-                    for (int i = 0; i < BulletPoolManager.instance.bulletHoleSyncList.Count; i++)
-                    {
-                        var bulletHoleElementInstance = BulletPoolManager.instance.bulletHoleSyncList[i];
-                        if (bulletHoleElementInstance.GetComponent<BulletBehavior>().IsAvaliable() == true)
-                        {
+                    Debug.Log(hit.transform.gameObject.name);
+                    //for (int i = 0; i < BulletPoolManager.instance.bulletHoleSyncList.Count; i++)
+                    //{
+                    //    var bulletHoleElementInstance = BulletPoolManager.instance.bulletHoleSyncList[i];
+                    //    if (bulletHoleElementInstance.GetComponent<BulletBehavior>().IsAvaliable() == true)
+                    //    {
 
-                            bulletHoleElementInstance.GetComponent<BulletBehavior>().StartHit();
-                            bulletHoleElementInstance.transform.rotation = Quaternion.LookRotation(-hit.normal);
-                            bulletHoleElementInstance.transform.position = hit.point + hit.normal.normalized * 0.01f;
+                    //        bulletHoleElementInstance.GetComponent<BulletBehavior>().StartHit();
+                    //        bulletHoleElementInstance.transform.rotation = Quaternion.LookRotation(-hit.normal);
+                    //        bulletHoleElementInstance.transform.position = hit.point + hit.normal.normalized * 0.01f;
 
-                            //CHANGE BEHAVIOR ON IMPACT SOUND
-                            PlayImpactSounds(bulletHoleElementInstance.gameObject);
+                    //        //CHANGE BEHAVIOR ON IMPACT SOUND
+                    //        PlayImpactSounds(bulletHoleElementInstance.gameObject);
 
-                            bulletHoleElementInstance.transform.parent = hit.transform;
+                    //        //bulletHoleElementInstance.transform.parent = hit.transform;
 
-                            break;
-                        }
-                        else
-                        {
-                            if (i == BulletPoolManager.instance.bulletHoleSyncList.Count - 1) // Last Bullet 
-                            {
-                                GameObject newBulletHole = Instantiate(BulletPoolManager.instance.bulletHolePrefab);
-                                newBulletHole.transform.parent = BulletPoolManager.instance.transform;
+                    //        break;
+                    //    }
+                    //    else
+                    //    {
+                    //        if (i == BulletPoolManager.instance.bulletHoleSyncList.Count - 1) // Last Bullet 
+                    //        {
+                    //            GameObject newBulletHole = Instantiate(BulletPoolManager.instance.bulletHolePrefab);
 
+                    //            //CHANGE BEHAVIOR ON IMPACT SOUND
+                    //            PlayImpactSounds(bulletHoleElementInstance.gameObject);
 
-                                //CHANGE BEHAVIOR ON IMPACT SOUND
-                                PlayImpactSounds(bulletHoleElementInstance.gameObject);
-
-                                BulletPoolManager.instance.bulletHoleSyncList.Add(newBulletHole.GetComponent<NetworkIdentity>());
-                            }
-                        }
-                    }
+                    //            BulletPoolManager.instance.bulletHoleSyncList.Add(newBulletHole.GetComponent<NetworkIdentity>());
+                    //        }
+                    //    }
+                    //}
                 }
                 else
                 {
@@ -289,6 +299,17 @@ public abstract class Weapon : XRGrabInteractable
                         if (target != null)
                         {
                             target.TakeDamage(damage);
+                        }
+                    }
+
+                    //TakeDamage
+                    if (hit.collider.gameObject.GetComponent<BodyPart>())
+                    {
+                        BodyPart bodyPart = hit.transform.GetComponent<BodyPart>();
+                        if (bodyPart != null)
+                        {
+                            bodyPart.TakeDamage(damage);
+                            Debug.Log(bodyPart.gameObject.name);
                         }
                     }
                 }
@@ -337,7 +358,8 @@ public abstract class Weapon : XRGrabInteractable
 
     }
 
-    protected override void OnSelectEntering(SelectEnterEventArgs args)
+
+    protected override void  OnSelectEntering(SelectEnterEventArgs args)
     {
         if (args.interactorObject.transform.CompareTag("LeftHand"))
         {
