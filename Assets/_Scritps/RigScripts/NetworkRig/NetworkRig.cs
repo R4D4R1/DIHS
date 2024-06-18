@@ -29,9 +29,9 @@ public class NetworkRig : NetworkBehaviour
             networkHead.transform.SetPositionAndRotation(hardwareRig.headsetPosition, hardwareRig.headsetRotation);
 
             networkBody.transform.position = new Vector3(hardwareRig.bodyPosition.x, hardwareRig.bodyPosition.y + offset, hardwareRig.bodyPosition.z);
-            networkBody.transform.rotation = Quaternion.Euler(0f, hardwareRig.headsetRotation.y , 0f);
-            Debug.Log(hardwareRig.headsetRotation.y);
-            //networkBody.transform.rotation = new Quaternion(0f, hardwareRig.headsetRotation.y, 0f, 1f);
+            networkBody.transform.eulerAngles = new Vector3(0f, hardwareRig.bodyRotation.eulerAngles.y , 0f);
+
+
 
         }
     }

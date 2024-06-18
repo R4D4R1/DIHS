@@ -2087,6 +2087,12 @@ MonoBehaviour:
   serverOnly: 0
   visibility: 0
   hasSpawned: 0
+--- !u!82 &1174446537 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 1110325647781769133, guid: d7b5b75f9a67a5c4886b61d7596c24fc,
+    type: 3}
+  m_PrefabInstance: {fileID: 5445068307177319406}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1290040203
 GameObject:
   m_ObjectHideFlags: 0
@@ -2136,7 +2142,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4047503882683654, guid: e0d3f8289f60e1e49a5d66d5eb8582f3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 4047503882683654, guid: e0d3f8289f60e1e49a5d66d5eb8582f3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3524,6 +3530,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 352908005876515294, guid: d7b5b75f9a67a5c4886b61d7596c24fc,
+        type: 3}
+      propertyPath: reloadTime
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 352908005876515294, guid: d7b5b75f9a67a5c4886b61d7596c24fc,
+        type: 3}
+      propertyPath: reloadSource
+      value: 
+      objectReference: {fileID: 1174446537}
+    - target: {fileID: 1110325647781769133, guid: d7b5b75f9a67a5c4886b61d7596c24fc,
+        type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1518459052772155628, guid: d7b5b75f9a67a5c4886b61d7596c24fc,
         type: 3}
       propertyPath: sceneId

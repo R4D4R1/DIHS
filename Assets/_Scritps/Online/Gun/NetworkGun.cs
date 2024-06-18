@@ -39,12 +39,18 @@ public class NetworkGun : NetworkBehaviour
 
     private void Update()
     {
-        if (Input.anyKeyDown)
+        if (Input.GetKeyDown(KeyCode.Escape)) 
         {
-            if(isClient)             
+            if (isClient)
             {
                 AttemptToShootNetworkGun(null);
-
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (isClient)
+            {
+                CmdReloadWeaponNetwork();
             }
         }
     }
@@ -60,14 +66,9 @@ public class NetworkGun : NetworkBehaviour
     [ClientRpc]
     public void RpcAttemptToShootNetworkGun()
     {
-        Debug.Log("123");
         weapon.ShootGun();
+
     }
-
-
-
-
-
 
 
 
@@ -85,8 +86,6 @@ public class NetworkGun : NetworkBehaviour
     void RpcReloadWeaponNetwork()
     {
         weapon.ReloadGun();
-
-        // weapon.GetComponent<NetworkGunStats>().SetAmmo(weapon.GetComponent<NetworkGunStats>().GetMaxAmmo());
     }
 
     [Command(requiresAuthority = false)]

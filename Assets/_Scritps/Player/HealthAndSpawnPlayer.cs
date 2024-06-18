@@ -1,15 +1,22 @@
 using Mirror;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
 
-public class PlayerHealthNetwork : NetworkBehaviour
+public class HealthAndSpawnPlayer : NetworkBehaviour
 {
+    [SyncVar] private int connNumber = 0;
+
     [SyncVar] [SerializeField] private float HP;
     [SyncVar] [SerializeField] private float respawnTime;
     [SyncVar] [SerializeField] private NetworkRig networkRig;
+
+    [SerializeField] private List<MeshRenderer> playersBodyPartsMesh;
+    [SerializeField] private Material redMaterial;
+    [SerializeField] private Material blueMaterial;
     [SerializeField] private Volume volume;
 
 
@@ -32,13 +39,33 @@ public class PlayerHealthNetwork : NetworkBehaviour
 
         if (!isLocalPlayer)
         {
-            networkRig.transform.gameObject.SetActive(false);
+            this.enabled = false;
         }
 
-        if (Random.Range(0, 2) == 0)
+        // TEAM RED
+        if (connNumber == 0)
+        {
             team = Teams.Red;
-        if (Random.Range(0, 2) == 1)
+            foreach(var part in playersBodyPartsMesh)
+            {
+                part.material = redMaterial;
+            }
+
+            connNumber = 1;
+
+        }
+        // TEAM BLUE
+        else if (connNumber == 1)
+        {
             team = Teams.Blue;
+            foreach (var part in playersBodyPartsMesh)
+            {
+                part.material = blueMaterial;
+            }
+
+            connNumber = 0;
+
+        }
 
         //SpawnPlayer();
     }

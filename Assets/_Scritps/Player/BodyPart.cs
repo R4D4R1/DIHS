@@ -5,7 +5,7 @@ public class BodyPart : NetworkBehaviour
 {
     [Range(0f, 2f)]
     [SerializeField] private float damageCoef;
-    [SerializeField] private PlayerHealthNetwork playerHealth;
+    [SerializeField] private HealthAndSpawnPlayer playerHealth;
 
     private void Update()
     {

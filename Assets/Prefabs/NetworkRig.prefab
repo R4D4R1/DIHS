@@ -1373,9 +1373,14 @@ MonoBehaviour:
   syncDirection: 1
   syncMode: 0
   syncInterval: 0
-  HP: 10
+  HP: 45
   respawnTime: 5
   networkRig: {fileID: 2707404180755783550}
+  playersBodyPartsMesh:
+  - {fileID: 1548998716140277309}
+  - {fileID: 1358522789817968789}
+  redMaterial: {fileID: 2100000, guid: 4f0e6c26fea5e634181681a03f6a9a3a, type: 2}
+  blueMaterial: {fileID: 2100000, guid: 58c40fee94be7a744b67ca3e327e4fe9, type: 2}
   volume: {fileID: 1297499097567500721}
   <team>k__BackingField: 0
 --- !u!1 &3536229494196092048

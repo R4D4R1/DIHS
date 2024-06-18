@@ -11,10 +11,11 @@ public abstract class Weapon : XRGrabInteractable
 
     [Header("Main Stats")]
     [SerializeField] protected int damage;
+    [SerializeField] protected float reloadTime;
     [SerializeField] protected float fireRate;
     [SerializeField] protected bool autoFireMode;
 
-
+    private bool CanShoot = true;
     protected Coroutine firingRoutine = null;
     protected WaitForSeconds wait = null;
     protected GameObject magazine;
@@ -48,6 +49,7 @@ public abstract class Weapon : XRGrabInteractable
     [SerializeField] private AudioClip noBulletSound;
     [SerializeField] public AudioClip reloadingSound;
     [SerializeField] private LayerMask undestractableLayer;
+    [SerializeField] private AudioSource reloadSource;
 
 
     [Space(30)]
@@ -162,38 +164,54 @@ public abstract class Weapon : XRGrabInteractable
 
     public void ReloadGun()
     {
+        if(CanShoot)
+            StartCoroutine(ReloadCourutine(reloadTime));
+    }
+
+    IEnumerator ReloadCourutine(float reloadTime)
+    {
+        CanShoot = false;
+        ammoText.text = "ЗАРЯД";
+
+        yield return new WaitForSeconds(reloadTime);
+
 
         GetComponent<NetworkGunStats>().SetAmmo(GetComponent<NetworkGunStats>().GetMaxAmmo());
         ammoText.text = networkGunStats.GetAmmo().ToString();
+        reloadSource.Play();
+
+        CanShoot = true;
     }
 
     //
     public void AttemptToShoot(Vector3 recoilOffset, Transform boltTransform, float targetX)
     {
-
-
         //Audiosources for sounds
         AudioPoolExample audioPoolExample = this.gameObject.GetComponent<AudioPoolExample>();
 
-        if (networkGunStats.GetAmmo() > 0)
+        if(CanShoot)
         {
-
-            if (autoFireMode)
+            if (networkGunStats.GetAmmo() > 0)
             {
-                firingRoutine = StartCoroutine(FiringSequence(audioPoolExample, recoilOffset, boltTransform, targetX));
 
+                if (autoFireMode)
+                {
+                    firingRoutine = StartCoroutine(FiringSequence(audioPoolExample, recoilOffset, boltTransform, targetX));
+
+                }
+                else
+                {
+                    StartShoot(audioPoolExample, boltTransform, targetX);
+                    HitSomething(recoilOffset);
+                }
             }
             else
             {
-                StartShoot(audioPoolExample, boltTransform, targetX);
-                HitSomething(recoilOffset);
+                audioPoolExample.PlayClip(noBulletSound);
             }
-        }
-        else
-        {
-            audioPoolExample.PlayClip(noBulletSound);
-        }
-        ammoText.text = networkGunStats.GetAmmo().ToString();
+            ammoText.text = networkGunStats.GetAmmo().ToString();
+
+        }        
     }
 
     public void AttemptToShootShotGun(float recoilOffset,float targetX)
